@@ -30,6 +30,12 @@ export type Song = {
     dt: number;
 }
 
+// 播放地址
+export type SongUrl = {
+    id: number;
+    url: string;
+}
+
 // 歌单
 export type SongSheet = {
     id: number;
@@ -38,3 +44,4 @@ export type SongSheet = {
     playCount: number;
     tracks: Song[];
 }
+
