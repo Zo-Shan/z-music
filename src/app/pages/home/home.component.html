@@ -1,0 +1,59 @@
+<div class="home">
+    <app-wy-carousel #wyCarousel [activeIndex]="carouselActiveIndex" (changeSlide)="onChangeSlide($event)">
+        <nz-carousel nzAutoPlay nzEffect="fade" [nzDotRender]="wyCarousel.dotRef" (nzBeforeChange)="onBeforeChange($event)">
+            <div class="carousel-item" nz-carousel-content *ngFor="let item of banners">
+                <a [href]="item.url" target="_blank" class="banner-item">
+                    <img [src]="item.imageUrl" />
+                </a>
+            </div>
+        </nz-carousel>
+    </app-wy-carousel>
+
+    <div class="main">
+        <div class="wrap">
+            <div class="left">
+                <div class="sec">
+                    <div class="up">
+                        <div class="navs">
+                            <h2>
+                                <i></i>
+                                <a>热门推荐</a>
+                            </h2>
+                            <nav>
+                                <a *ngFor="let item of hotTags">{{item.name}}</a>
+                            </nav>
+                        </div>
+                        <a>
+                            更多
+                            <i nz-icon type="arrow-right" theme="outline"></i>
+                        </a>
+                    </div>
+                    <div class="down">
+                        <div class="down-wrap">
+                            <app-single-sheet class="sheet-item" *ngFor="let item of songSheetList" [sheet]="item" (onPlay)="onPlaySheet($event)"></app-single-sheet>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <app-member-card></app-member-card>
+                <div class="settled-singer">
+                    <div class="tit"><b>入住歌手</b></div>
+                    <div class="list">
+                        <div class="card" *ngFor="let item of singers">
+                            <div class="pic">
+                                <img [src]="item.picUrl" [alt]="item.name">
+                            </div>
+                            <div class="txt">
+                                <b class="ellipsis">{{item.name}}</b>
+                                <span>专辑数：{{item.albumSize}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
