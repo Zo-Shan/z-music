@@ -7,7 +7,7 @@ export const API_CONFIG = new InjectionToken('ApiConfigToken');
   imports: [
   ],
   providers: [
-    {provide: API_CONFIG, useValue: 'http://localhost:3000/'}
+    {provide: API_CONFIG, useValue: 'http://danzo.top:3000/'}
   ]
 })
 export class ServicesModule { }

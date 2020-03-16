@@ -27,7 +27,7 @@ export class WySliderTrackComponent implements OnInit, OnChanges {
         this.style.height = null;
       }
     }
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   }
 
 }

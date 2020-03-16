@@ -19,7 +19,7 @@ export class WySliderHandleComponent implements OnInit, OnChanges {
     if (changes['wyOffset']) {
       this.style[this.wyVertical ? 'bottom' : 'left'] = this.wyOffset + '%';
     }
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   }
 
 }
