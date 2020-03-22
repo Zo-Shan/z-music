@@ -1,4 +1,6 @@
-<div class="m-player">
+<div class="m-player"
+    (click)="selfClick = true"
+>
     <div class="lock">
         <div class="left"><i></i></div>
     </div>
@@ -40,18 +42,18 @@
                 <i class="share" title="分享"></i>
             </div>
             <div class="ctrl">
-                <i class="volume" title="音量"></i>
-                <i class="loop" title="循环"></i>
+                <i class="volume" title="音量" (click)="toggleVolPanel($event)"></i>
+                <i [ngClass]="currentMode.type" [title]="currentMode.label" (click)="changeMode()"></i>
                 <p class="open">
                     <span></span>
                 </p>
-                <div class="control-vol">
-                    <app-wy-slider [wyVertical]="true"></app-wy-slider>
+                <div class="control-vol" [hidden]="!showVolumePanel">
+                    <app-wy-slider [wyVertical]="true" [(ngModel)]="volume" (ngModelChange)="onVolumeChange($event)"></app-wy-slider>
                 </div>
             </div>
         </div>
     </div>
 
-    <audio #audio [src]="currentSong?.url" (canplay)="onCanplay()" (timeupdate)="onTimeUpdate($event)"></audio>
+    <audio #audio [src]="currentSong?.url" (canplay)="onCanplay()" (timeupdate)="onTimeUpdate($event)" (ended)="onEnded()"></audio>
 
 </div>
