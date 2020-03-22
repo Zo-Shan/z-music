@@ -25,9 +25,14 @@ export type Song = {
     id: number;
     name: string;
     url: string;
-    ar: string[];
+    ar: songAr[];
     al: { id: number; name: string; picUrl: string };
     dt: number;
+}
+
+type songAr = { 
+    id: number;
+    name: string;
 }
 
 // 播放地址

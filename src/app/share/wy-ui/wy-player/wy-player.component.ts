@@ -4,6 +4,7 @@ import { AppStoreModule } from 'src/app/store';
 import { getSongList, getPlayList, getCurrentIndex, getPlayer, getPlayMode, getCurrentSong } from 'src/app/store/selectors/play.selector';
 import { Song } from 'src/app/services/dataTypes/common.types';
 import { PlayMode } from './player-type';
+import { SetCurrentIndex } from 'src/app/store/actions/play.action';
 
 @Component({
   selector: 'app-wy-player',
@@ -11,13 +12,22 @@ import { PlayMode } from './player-type';
   styleUrls: ['./wy-player.component.less']
 })
 export class WyPlayerComponent implements OnInit {
-  sliderValue = 35;
-  bufferOffset = 70;
+  percent = 0;
+  bufferPercent = 0;
 
   songList: Song[];
   playList: Song[];
   currentIndex: number;
   currentSong: Song;
+
+  duration: number;
+  currentTime: number;
+
+  // 播放状态
+  playing = false;
+
+  // 是否可以播放
+  songReady = false;
 
   @ViewChild('audio', { static: true }) private audio: ElementRef;
   private audioEl: HTMLAudioElement;
@@ -71,15 +81,88 @@ export class WyPlayerComponent implements OnInit {
   }
 
   private watchCurrentSong(song: Song) {
-    this.currentSong = song;
+    if (song) {
+      this.currentSong = song;
+      this.duration = song.dt / 1000;
+    }
     console.log('song:', song);
   }
 
+  onPercentChange(per) {
+    this.audioEl.currentTime = this.duration * (per / 100);
+  }
+
+  // 播放/暂停
+  onToggle() {
+    if(!this.currentSong) {
+      if(this.playList.length) {
+        this.updateIndex(0);
+      }
+    } else {
+      if(this.songReady) {
+        this.playing = !this.playing;
+        if(this.playing) {
+          this.audioEl.play();
+        } else {
+          this.audioEl.pause();
+        }
+      }
+    }
+  }
+
+  // 上一首
+  onPrev(index: number) {
+    if(!this.songReady) return;
+    if (this.playList.length === 1) {
+      this.loop();
+    } else {
+      const newIndex = index <= 0 ? this.playList.length - 1 : index;
+      this.updateIndex(newIndex);
+    }
+  }
+
+  // 下一首
+  onNext(index: number) {
+    if(!this.songReady) return;
+    if (this.playList.length === 1) {
+      this.loop();
+    } else {
+      const newIndex = index >= this.playList.length ? 0 : index;
+      this.updateIndex(newIndex);
+    }
+  }
+
+  // 单曲循环
+  private loop() {
+    this.audioEl.currentTime = 0;
+    this.play;
+  }
+
+  private updateIndex(index: number) {
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: index }));
+    this.songReady = false;
+  }
+
   onCanplay() {
+    this.songReady = true;
     this.play();
+  }
+
+  onTimeUpdate(e: Event) {
+    this.currentTime = (<HTMLAudioElement>e.target).currentTime;
+    this.percent = (this.currentTime / this.duration) * 100;
+    const buffered = this.audioEl.buffered;
+    if(buffered.length && this.bufferPercent < 100) {
+      this.bufferPercent = (buffered.end(0) / this.duration) * 100;
+    }
   }
 
   private play() {
     this.audioEl.play();
+    this.playing = true;
+  }
+
+  get picUrl(): string {
+    return this.currentSong ? this.currentSong.al.picUrl : 'http://s4.music.126.net/style/web2/img/default/default_album.jpg'
   }
 }
