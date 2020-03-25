@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of, EMPTY, forkJoin }  from 'rxjs';
-import { first }         from 'rxjs/operators';
+import { Observable, of, EMPTY, forkJoin } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { HomeService } from 'src/app/services/home.service';
 import { SingerService } from 'src/app/services/singer.service';
 import { HotTag, SongSheet, Singer, Banner } from 'src/app/services/dataTypes/common.types';

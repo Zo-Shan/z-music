@@ -33,7 +33,7 @@ registerLocaleData(zh);
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
 })
-export class CoreModule { 
+export class CoreModule {
   constructor(@SkipSelf() @Optional() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error('CoreModule 只能被appModule引入');
